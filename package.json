@@ -1,6 +1,6 @@
 {
   "name": "@transomjs/transom-server-functions",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Add custom functions to server-side Transom code",
   "main": "index.js",
   "scripts": {
