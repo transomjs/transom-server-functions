@@ -1,0 +1,39 @@
+{
+  "name": "@transomjs/transom-server-functions",
+  "version": "1.0.1",
+  "description": "Add custom functions to server-side Transom code",
+  "main": "index.js",
+  "scripts": {
+    "test": "cross-env NODE_ENV=test nyc mocha",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transomjs/transom-server-functions.git"
+  },
+  "keywords": [
+    "smtp",
+    "email"
+  ],
+  "author": "Mark Voorberg <mark@binaryops.ca>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/transomjs/transom-server-functions/issues"
+  },
+  "homepage": "https://github.com/transomjs/transom-server-functions#readme",
+  "engines": {
+    "node": ">= 6"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "coveralls": "^3.0.0",
+    "cross-env": "^5.1.1",
+    "mocha": "^4.0.1",
+    "mocha-lcov-reporter": "^1.3.0",
+    "nyc": "^11.2.1",
+    "shelljs": "^0.7.8",
+    "sinon": "^4.1.1"
+  },
+  "dependencies": {
+  }
+}
