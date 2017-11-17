@@ -7,7 +7,7 @@ Add custom functions to your server-side Transomjs code.
 ## Installation
 
 ```bash
-$ npm install --save transom-server-functions
+$ npm install --save @transomjs/transom-server-functions
 ```
 
 ## Usage
