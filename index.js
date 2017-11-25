@@ -27,7 +27,7 @@ function TransomServerFx() {
 
 	function createFunctions(server, preMiddleware, postMiddleware) {
 		const serverFxHandler = new ServerFxHandler();
-		const serverFunctions = server.registry.get('transom-options.api_definition.functions', {});
+		const serverFunctions = server.registry.get('transom-config.definition.functions', {});
 
 		Object.keys(serverFunctions).map(function (key) {
 			const fx = serverFunctions[key];
