@@ -36,8 +36,10 @@ function TransomServerFx() {
 			const fxPreMiddleware = serverFxHandler.serverFunctionMiddleware(fx, preMiddleware);
 			const wrappedFx = serverFxHandler.getWrapper(server, fx);
 
+			const uriPrefix = server.registry.get('transom-config.definition.uri.prefix');
+			
 			fx.methods.forEach(function (method) {
-				const urlPath = `/v1/:__api_code/:__version/fx/${key}`;
+				const urlPath = `${uriPrefix}/fx/${key}`;
 				switch (method.toLowerCase()) {
 					case "post":
 						server.post(urlPath, fxPreMiddleware, wrappedFx, postMiddleware);
