@@ -9,7 +9,7 @@ Using plugin you can create and deploy your own functions to the API server. The
 ```bash
 $ npm install --save @transomjs/transom-server-functions
 ```
-### Initilization
+## Usage
 When creating and configuring your TransomJS server, you'll need to include the transom-server-functions as follows:
 
 ```javascript
@@ -36,21 +36,24 @@ The server functions may be used as end-points in your api, or as action trigger
 
 #### Server Functions as end points
 
-You need to inlude a 'functions' object in your api definition:
+You need to inlude a 'functions' object in your api definition as a child of ```definition```:
 ```javascript
 ...,
 "functions": {
-    "functionname":{
+    "mySpecialFunction":{
         "methods": ["POST","GET","DELETE","PUT"],
-        "function": Function,
+        "function": function(server, req, res, next) {
+            //do stuff
+            next();
+            },
         "acl": {
-            "groups": ["groupcode1", "groupcode2"] 
+            "groups": ["marketing", "sales"] 
         }
     },...more functions
 
 ```
 The corresponding end point is:
-```<baseurl>\fx\functionname ``` it may be called with the request methods that are included in the the methods array.
+```<baseurl>\fx\mySpecialFunction ``` it may be called with the request methods that are included in the the methods array.
 
 If the security plugin is available on the server, then the acl property is used to restrict access to the end-point. The caller will need to be authenticated and be member of at least one of the groups in the array.
 
@@ -70,35 +73,4 @@ function (server, req, res, next) {
     console.log('You can see this in your console...');
     next();
 };
-```
-#### The database action function definiton
-The action needs to be configured in the ```db``` section of the api definition. More info [here](https://github.com/transomjs/transom-mongoose/blob/master/README.md)
-
-There are two types of action functions, the ```before``` action and the ```after``` action. The before is typically used to apply business rules and potentially trigger an error in case of validation errors. 
-
-It looks like this:
-```javascript
-@param server TransomJS instance
-@param next The next function that needs to be called when processing is complete. It may be called with an error argument in which case the record will not be stored in the database, and the api call responds with an error.
-function (server, next){
-    //note that the record instance is not passed in. It is referenced using `this`
-    //server is the transonJS instance. 
-    //next needs
-
-    if (this.fieldValue == 'bad'){
-        next('bad data');
-    } else {
-        next();
-    }
-}
-``` 
-
-The ```after``` action does not get to alter the response to the request. It is used for additional processing on the server, for instance creating an asynchronous communication, or perform additional processing.
-
-```javascript
-@param server TransomJS server instance
-@param item The record that was stored in the database.
-@param next function which must be called on completion of processing, optionally with an error object as argument, in which case the api request will return an error, however the database action will not be rolled back.
-function (server, item, next) {
-}
 ```
