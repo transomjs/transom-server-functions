@@ -41,7 +41,7 @@ You need to inlude a 'functions' object in your api definition:
 ...,
 "functions": {
     "functionname":{
-        "methods": ["POST","GET","DELETE","PUT],
+        "methods": ["POST","GET","DELETE","PUT"],
         "function": Function,
         "acl": {
             "groups": ["groupcode1", "groupcode2"] 
