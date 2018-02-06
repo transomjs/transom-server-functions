@@ -73,3 +73,6 @@ function (server, req, res, next) {
     next();
 };
 ```
+### Example APIs using this plugin
+
+[Simple Example](https://github.com/binaryops-wiebo/transom-functions-simple-example)
