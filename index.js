@@ -29,6 +29,35 @@ function TransomServerFx() {
 		createFunctions(server, preMiddleware, postMiddleware);
 	}
 
+	this.preStart = function(server, options){
+		const serverFunctions = server.registry.get('transom-config.definition.functions', {});
+
+		//lastly, make sure that the groups referenced in the acl properties are seeded in the security plugin
+		if (server.registry.has('transomLocalUserClient')){
+			const localUserClient = server.registry.get('transomLocalUserClient')
+			//collect the distinct groups first
+			// Create Mongoose models from the API definition.
+            const groups = [];
+            Object.keys(serverFunctions).forEach(function(key) {
+                const acl = serverFunctions[key].acl || {};
+                if (acl.groups) {
+                    if (typeof acl.create === 'string') {
+                        acl.groups = [acl.groups];
+                    }
+                    groups.push(...acl.groups);
+                }
+            });
+            // Build a list of distinct group codes.
+            const distinctGroups = {};
+            groups.map(function(group) {
+                group = group.toLowerCase().trim();
+                distinctGroups[group] = true;
+			});
+			
+			localUserClient.setGroups(server, distinctGroups);
+		}
+	}
+
 	function createFunctions(server, preMiddleware, postMiddleware) {
 		const serverFxHandler = new ServerFxHandler();
 		const serverFunctions = server.registry.get('transom-config.definition.functions', {});
