@@ -29,7 +29,9 @@ transom.configure(transomServerFx);
 var myApi = require('./myApi');
 
 // Initialize all the plugins using my api definitions.
-var server = transom.initialize(myApi);
+transom.initialize(myApi).then(function(server){
+    ...
+};
 
 ```
 
