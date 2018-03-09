@@ -2,18 +2,18 @@
 const ServerFxHandler = require('./lib/serverFxHandler');
 
 function TransomServerFx() {
-// 	this.initialize = function (server, options) {
-// 		server.registry.set(options.registryKey || 'transomServerFunctions', new ServerFxHandler(server, options));
-// 	}
-// }
+	// 	this.initialize = function (server, options) {
+	// 		server.registry.set(options.registryKey || 'transomServerFunctions', new ServerFxHandler(server, options));
+	// 	}
+	// }
 
-// module.exports = new TransomServerFx();
+	// module.exports = new TransomServerFx();
 
-// 'use strict';
-// const ServerFxHandler = require('./serverFxHandler');
-// const assert = require('assert');
+	// 'use strict';
+	// const ServerFxHandler = require('./serverFxHandler');
+	// const assert = require('assert');
 
-// function TransomServerFunctions() {
+	// function TransomServerFunctions() {
 
 	this.initialize = function (server, options) {
 		const postMiddleware = options.postMiddleware || [];
@@ -29,32 +29,29 @@ function TransomServerFx() {
 		createFunctions(server, preMiddleware, postMiddleware);
 	}
 
-	this.preStart = function(server, options){
+	this.preStart = function (server, options) {
 		const serverFunctions = server.registry.get('transom-config.definition.functions', {});
 
-		//lastly, make sure that the groups referenced in the acl properties are seeded in the security plugin
-		if (server.registry.has('transomLocalUserClient')){
-			const localUserClient = server.registry.get('transomLocalUserClient')
-			//collect the distinct groups first
+		// Lastly, make sure that the groups referenced in the acl properties are seeded in the security plugin
+		if (server.registry.has('transomLocalUserClient')) {
+			// Collect the distinct groups first
 			// Create Mongoose models from the API definition.
-            const groups = [];
-            Object.keys(serverFunctions).forEach(function(key) {
-                const acl = serverFunctions[key].acl || {};
-                if (acl.groups) {
-                    if (typeof acl.create === 'string') {
-                        acl.groups = [acl.groups];
-                    }
-                    groups.push(...acl.groups);
-                }
-            });
-            // Build a list of distinct group codes.
-            const distinctGroups = {};
-            groups.map(function(group) {
-                group = group.toLowerCase().trim();
-                distinctGroups[group] = true;
+			const distinctGroups = {};
+			Object.keys(serverFunctions).forEach(function (key) {
+				const acl = serverFunctions[key].acl || {};
+				if (acl.groups) {
+					if (typeof acl.groups === 'string') {
+						acl.groups = [acl.groups];
+					}
+					acl.groups.map(function (group) {
+						// Build a list of distinct group codes.
+						group = group.toLowerCase().trim();
+						distinctGroups[group] = true;
+					});
+				}
 			});
-			
-			localUserClient.setGroups(server, distinctGroups);
+			const localUserClient = server.registry.get('transomLocalUserClient');
+			localUserClient.setGroups(server, Object.keys(distinctGroups));
 		}
 	}
 
@@ -70,7 +67,7 @@ function TransomServerFx() {
 			const wrappedFx = serverFxHandler.getWrapper(server, fx);
 
 			const uriPrefix = server.registry.get('transom-config.definition.uri.prefix');
-			
+
 			fx.methods.forEach(function (method) {
 				const urlPath = `${uriPrefix}/fx/${key}`;
 				switch (method.toLowerCase()) {
