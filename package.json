@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test nyc mocha",
+    "deploy": "np",
     "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
