@@ -13,18 +13,22 @@ function TransomServerFx() {
 		const serverFunctions = server.registry.get('transom-config.definition.functions', {});
 		const uriPrefix = server.registry.get('transom-config.definition.uri.prefix');
 
-		Object.keys(serverFunctions).map(function (key) {
+		Object.keys(serverFunctions).map((key) => {
 			const fx = serverFunctions[key];
-			fx.methods = fx.methods || ['post'];
+			if (fx.method) {
+				fx.methods = [fx.method];
+			} else {
+				fx.methods = fx.methods || ['post'];
+			}
 
-			// Add Authentication and Authorization middleware from localUserMiddleware.
+			// Add middleware from localUserMiddleware.
 			const fxPreMiddleware = serverFxHandler.serverFunctionMiddleware(fx, preMiddleware);
 
 			// Use a wrapper to inject 'server' into the request handler function.
 			const wrappedFx = serverFxHandler.getWrapper(fx);
 			const urlPath = `${uriPrefix}/fx/${key}`;
 
-			fx.methods.forEach(function (method) {
+			fx.methods.forEach((method) => {
 				debug(`TransomServerFunctions adding route: (${method}) ${urlPath}`);
 				switch (method.toLowerCase()) {
 					case "post":
