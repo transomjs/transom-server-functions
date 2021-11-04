@@ -29,7 +29,9 @@ transom.configure(transomServerFx);
 var myApi = require('./myApi');
 
 // Initialize all the plugins using my api definitions.
-var server = transom.initialize(myApi);
+transom.initialize(myApi).then(function(server){
+    ...
+};
 
 ```
 
@@ -76,3 +78,4 @@ function (server, req, res, next) {
 ### Example APIs using this plugin
 
 [Simple Example](https://github.com/binaryops-wiebo/transom-functions-simple-example)
+[Secured Example](https://github.com/binaryops-wiebo/transom-functions-secured-example)
