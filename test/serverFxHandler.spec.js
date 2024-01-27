@@ -1,11 +1,12 @@
 "use strict";
-const expect = require('chai').expect;
+// const expect = require('chai').expect;
 const sinon = require('sinon');
 const ServerFxHandler = require('../lib/serverFxHandler');
 
 describe('ServerFxHandler', function () {
+    let expect;
 
-    beforeEach(function () {
+    before(function () {
         // Stub out a mock nodemailer
         // sinon.stub(nodemailer, 'createTransport').callsFake(function (opts) {
         //     // whatever you would like innerLib.toCrazyCrap to do under test
@@ -19,6 +20,9 @@ describe('ServerFxHandler', function () {
         //     };
         //     return new Transport();
         // });
+        
+        // Use a dynamic import for the chai ES module!
+        return import("chai").then((chai) => (expect = chai.expect));
     });
 
     afterEach(function () {
